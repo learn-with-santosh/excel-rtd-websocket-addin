@@ -280,6 +280,85 @@ a {
     font-size: 15px;
 }
 
+.control-label {
+    display: block;
+    margin: 16px 0 6px;
+    color: var(--ink);
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.symbols-input,
+.fields-input {
+    width: 100%;
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    background: #fff;
+    color: var(--ink);
+    font: inherit;
+    outline: none;
+}
+
+.symbols-input {
+    min-height: 86px;
+    padding: 10px;
+    resize: vertical;
+}
+
+.fields-input {
+    min-height: 40px;
+    padding: 8px 10px;
+}
+
+.symbols-input:focus,
+.fields-input:focus {
+    border-color: var(--teal);
+    box-shadow: 0 0 0 3px rgba(45, 133, 128, 0.14);
+}
+
+.control-hint {
+    margin: 5px 0 0;
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.button-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 18px;
+}
+
+.button-row .primary-action {
+    flex: 1;
+}
+
+.secondary-action,
+.paste-action {
+    display: inline-flex;
+    min-height: 48px;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 10px 12px;
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    background: var(--panel);
+    color: var(--ink);
+    cursor: pointer;
+    font-weight: 800;
+}
+
+.secondary-action:hover,
+.paste-action:hover {
+    border-color: var(--teal);
+    color: var(--teal);
+}
+
+button:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+}
+
 .range-meta {
     color: var(--muted);
     font-size: 12px;
@@ -327,6 +406,64 @@ a {
     display: block;
     margin-top: 3px;
     font-size: 13px;
+}
+
+.feed-summary strong[data-state="error"] {
+    color: var(--coral-dark);
+}
+
+.feed-summary strong[data-state="live"] {
+    color: var(--teal);
+}
+
+.paste-action {
+    min-height: 36px;
+    padding: 7px 10px;
+    font-size: 11px;
+}
+
+.table-wrap {
+    overflow-x: auto;
+    margin-top: 20px;
+    border-top: 1px solid var(--line);
+}
+
+#quote-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+#quote-table th,
+#quote-table td {
+    padding: 9px 8px;
+    border-bottom: 1px solid var(--line);
+    text-align: right;
+}
+
+#quote-table th:first-child,
+#quote-table td:first-child {
+    text-align: left;
+}
+
+#quote-table thead th {
+    color: var(--muted);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+}
+
+#quote-table tbody th {
+    color: var(--ink);
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
 }
 
 .pulse {

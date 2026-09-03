@@ -1,5 +1,5 @@
 <!-- Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT License. -->
-<!-- RTD task pane: the run action highlights the currently selected Excel range. -->
+<!-- RTD task pane for viewing and pasting live market data. -->
 
 <!DOCTYPE html>
 <html>
@@ -36,43 +36,60 @@
                     <h1>Workbook feed</h1>
                 </div>
             </div>
-            <span class="connection-pill"><span class="status-dot" aria-hidden="true"></span>Ready</span>
+            <span id="connection-pill" class="connection-pill"><span class="status-dot" aria-hidden="true"></span><span id="connection-label">Offline</span></span>
         </header>
 
         <section class="intro" aria-labelledby="intro-title">
             <p class="eyebrow">LIVE WORKSPACE</p>
             <h2 id="intro-title">Shape the sheet.<br><em>See the signal.</em></h2>
-            <p class="intro-copy">Work with the active selection and keep your workbook feed easy to scan.</p>
+            <p class="intro-copy">Watch one stream per symbol, then move a clean snapshot into your workbook.</p>
         </section>
 
         <section class="selection-card" aria-labelledby="selection-title">
             <div class="section-heading">
                 <div>
-                    <p class="eyebrow">ACTIVE CONTEXT</p>
-                    <h2 id="selection-title">Selected range</h2>
+                    <p class="eyebrow">MARKET WATCH</p>
+                    <h2 id="selection-title">Build a live board</h2>
                 </div>
-                <span class="selection-icon" aria-hidden="true">+</span>
+                <span class="selection-icon" aria-hidden="true">&#8599;</span>
             </div>
-            <div class="range-preview">
-                <span class="range-label">CELL RANGE</span>
-                <strong>Current Excel selection</strong>
-                <span class="range-meta">Ready for an action</span>
+            <label class="control-label" for="symbols">Symbols</label>
+            <textarea id="symbols" class="symbols-input" rows="4" placeholder="ACC.NS&#10;INFY.NS" spellcheck="false"></textarea>
+            <p class="control-hint">One symbol per line, or separate symbols with commas.</p>
+
+            <label class="control-label" for="fields">Fields</label>
+            <input id="fields" class="fields-input" value="LAST, OPEN, HIGH, LOW" spellcheck="false" />
+            <p class="control-hint">Use LAST, OPEN, HIGH, LOW, or VOLUME.</p>
+
+            <div class="button-row">
+                <button type="button" id="connect" class="primary-action">
+                    <span>Connect board</span>
+                    <span class="action-arrow" aria-hidden="true">&#8594;</span>
+                </button>
+                <button type="button" id="copy" class="secondary-action" title="Copy live formulas as a tab-separated table" disabled>
+                    <span aria-hidden="true">&#10697;</span><span>Copy formulas</span>
+                </button>
             </div>
-            <button type="button" id="run" class="primary-action">
-                <span>Highlight selected range</span>
-                <span class="action-arrow" aria-hidden="true">&#8594;</span>
-            </button>
         </section>
 
         <section class="feed-summary" aria-label="Feed summary">
             <div>
                 <span class="summary-label">STREAM STATUS</span>
-                <strong>Listening for updates</strong>
+                <strong id="stream-status">Enter symbols to begin</strong>
             </div>
-            <span class="pulse" aria-hidden="true"></span>
+            <button type="button" id="paste" class="paste-action" title="Paste live formulas into the selected Excel range" disabled>
+                <span aria-hidden="true">&#8615;</span><span>Paste to Excel</span>
+            </button>
         </section>
 
-        <p id="item-subject" class="activity-message" aria-live="polite"></p>
+        <div class="table-wrap">
+            <table id="quote-table">
+                <caption class="visually-hidden">Live market values</caption>
+                <thead></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <p id="activity-message" class="activity-message" aria-live="polite"></p>
     </main>
 </body>
 
