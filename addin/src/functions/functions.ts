@@ -95,17 +95,17 @@ export function logMessage(message: string): string {
 }
 
 /**
- * Streams live market data for a symbol with a header row.
- * Sample: =GETLIVEDATA("ACC.NS","LAST,OPEN,HIGH,LOW,VOLUME")
+ * Streams one live market-data field for a symbol.
+ * Sample: =GETLIVEDATA("ACC.NS","LAST")
  * @customfunction GETLIVEDATA
  * @param {string} symbol Ticker symbol, e.g. ACC.NS
- * @param {string} fields Comma-separated: LAST, OPEN, HIGH, LOW, VOLUME
- * @param {CustomFunctions.StreamingInvocation<string[][]>} invocation Invocation
+ * @param {string} fields Field name: LAST, OPEN, HIGH, LOW, or VOLUME
+ * @param {CustomFunctions.StreamingInvocation<string>} invocation Invocation
  */
 export function getLiveData(
   symbol: string,
   fields: string,
-  invocation: CustomFunctions.StreamingInvocation<string[][]>
+  invocation: CustomFunctions.StreamingInvocation<string>
 ): void {
   const trimmedSymbol = (symbol ?? "").trim().toUpperCase();
 
@@ -129,22 +129,25 @@ export function getLiveData(
     return;
   }
 
-  const header: string[] = ["SYMBOL", ...requested];
+  if (requested.length !== 1) {
+    invocation.setResult(
+      new CustomFunctions.Error(
+        CustomFunctions.ErrorCode.invalidValue,
+        "Provide exactly one field: LAST, OPEN, HIGH, LOW, or VOLUME."
+      )
+    );
+    return;
+  }
+
+  const field = requested[0];
   let canceled = false;
 
-  // Rectangular: same width as header
-  invocation.setResult([
-    header,
-    [trimmedSymbol, ...requested.map(() => "Connecting…")],
-  ]);
+  invocation.setResult("Connecting...");
 
   const listener = (quote: Record<string, number | undefined>): void => {
     if (canceled) return;
-    const values = requested.map((f) => {
-      const v = quote[f];
-      return v === undefined ? "" : String(v);
-    });
-    invocation.setResult([header, [trimmedSymbol, ...values]]);
+    const value = quote[field];
+    invocation.setResult(value === undefined ? "" : String(value));
   };
 
   subscribeQuote(trimmedSymbol, listener);

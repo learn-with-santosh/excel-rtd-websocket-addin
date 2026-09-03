@@ -154,25 +154,20 @@ Example output:
 
 ### GETLIVEDATA
 
-Connects to the local mock WebSocket server and streams selected market fields. The result spills as a labeled table.
+Connects to the local mock WebSocket server and streams one market field for a symbol. The result is a single value, so the function can be copied across a row of field headers.
 
 ```excel
-=COG.GETLIVEDATA("ACC.NS","LAST,OPEN,HIGH,LOW,VOLUME")
+=COG.GETLIVEDATA("ACC.NS","LAST")
 ```
 
-Initial layout:
+Example copied across:
 
-| SYMBOL | LAST | OPEN | HIGH | LOW | VOLUME |
-|---|---:|---:|---:|---:|---:|
-| ACC.NS | Connecting... | Connecting... | Connecting... | Connecting... | Connecting... |
+| Symbol | Field | Formula | Result |
+|---|---|---|---:|
+| ACC.NS | LAST | `=COG.GETLIVEDATA("ACC.NS","LAST")` | 1025.10 |
+| ACC.NS | OPEN | `=COG.GETLIVEDATA("ACC.NS","OPEN")` | 1010.00 |
 
-Example live output:
-
-| SYMBOL | LAST | OPEN | HIGH | LOW | VOLUME |
-|---|---:|---:|---:|---:|---:|
-| ACC.NS | 1025.10 | 1010.00 | 1030.00 | 1005.00 | 124000 |
-
-Supported fields are `LAST`, `OPEN`, `HIGH`, `LOW`, and `VOLUME`. Field names are case-insensitive and duplicate fields are removed.
+Supported fields are `LAST`, `OPEN`, `HIGH`, `LOW`, and `VOLUME`. Field names are case-insensitive.
 
 ## Build
 
