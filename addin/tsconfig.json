@@ -16,7 +16,6 @@
     "target": "es6",
     "types": [
       "custom-functions-runtime",
-      "mocha",
       "node",
       "office-js",
       "office-runtime"

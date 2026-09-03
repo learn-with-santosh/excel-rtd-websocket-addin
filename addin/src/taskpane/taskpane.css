@@ -65,16 +65,329 @@
      margin-top: 30px;
  }
  
-.ms-Button.ms-Button--hero .ms-Button-label {
-  color: #0078d7;
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
+ * See LICENSE in the project root for license information.
+ */
+
+:root {
+    --ink: #18252c;
+    --muted: #647277;
+    --paper: #f4f1ea;
+    --panel: #fffdf8;
+    --line: #d8d8cf;
+    --coral: #ed684d;
+    --coral-dark: #bd4937;
+    --teal: #2d8580;
+    --shadow: 0 12px 30px rgba(24, 37, 44, 0.08);
 }
 
-.ms-Button.ms-Button--hero:hover .ms-Button-label,
-.ms-Button.ms-Button--hero:focus .ms-Button-label{
-  color: #005a9e;
-  cursor: pointer;
+* {
+    box-sizing: border-box;
 }
 
-b {
-    font-weight: bold;
+html,
+body {
+    width: 100%;
+    min-width: 280px;
+    min-height: 100%;
+    margin: 0;
+}
+
+body {
+    background-color: var(--paper);
+    background-image: linear-gradient(rgba(24, 37, 44, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(24, 37, 44, 0.035) 1px, transparent 1px);
+    background-size: 24px 24px;
+    color: var(--ink);
+    font-family: "Aptos", "Segoe UI", sans-serif;
+    font-size: 14px;
+    line-height: 1.45;
+}
+
+button,
+a {
+    font: inherit;
+}
+
+a {
+    color: var(--coral-dark);
+    font-weight: 700;
+}
+
+.workspace,
+.sideload-state {
+    width: 100%;
+    max-width: 520px;
+    min-height: 100vh;
+    margin: 0 auto;
+    padding: 24px 20px 28px;
+}
+
+.workspace {
+    display: flex;
+    flex-direction: column;
+    animation: arrive 420ms ease-out both;
+}
+
+.workspace-header,
+.brand-lockup,
+.section-heading,
+.feed-summary {
+    display: flex;
+    align-items: center;
+}
+
+.workspace-header,
+.section-heading,
+.feed-summary {
+    justify-content: space-between;
+}
+
+.brand-lockup {
+    gap: 10px;
+}
+
+.brand-mark {
+    display: grid;
+    width: 36px;
+    height: 36px;
+    flex: 0 0 36px;
+    place-items: center;
+    border-radius: 10px 10px 10px 2px;
+    background: var(--ink);
+    color: #f7c66c;
+    font-family: Georgia, serif;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.eyebrow,
+.range-label,
+.summary-label {
+    margin: 0;
+    color: var(--muted);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    line-height: 1.2;
+}
+
+.brand-lockup h1,
+.intro h2,
+.selection-card h2 {
+    margin: 0;
+    font-weight: 700;
+    letter-spacing: 0;
+}
+
+.brand-lockup h1 {
+    font-size: 16px;
+    line-height: 1.1;
+}
+
+.connection-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 9px;
+    border: 1px solid #b8d4c7;
+    border-radius: 999px;
+    background: #edf7ef;
+    color: #28654f;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.status-dot,
+.pulse {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--teal);
+}
+
+.intro {
+    padding: 58px 4px 32px;
+}
+
+.intro .eyebrow {
+    color: var(--coral-dark);
+}
+
+.intro h2 {
+    margin-top: 8px;
+    font-size: clamp(30px, 9vw, 46px);
+    letter-spacing: -0.025em;
+    line-height: 0.98;
+}
+
+.intro h2 em {
+    color: var(--coral);
+    font-family: Georgia, serif;
+    font-weight: 400;
+}
+
+.intro-copy {
+    max-width: 330px;
+    margin: 16px 0 0;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+.selection-card {
+    padding: 18px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--panel);
+    box-shadow: var(--shadow);
+}
+
+.section-heading {
+    align-items: flex-start;
+}
+
+.selection-card h2 {
+    margin-top: 4px;
+    font-size: 18px;
+}
+
+.selection-icon {
+    display: grid;
+    width: 27px;
+    height: 27px;
+    place-items: center;
+    border-radius: 50%;
+    background: #f9e5d5;
+    color: var(--coral-dark);
+    font-size: 20px;
+    line-height: 1;
+}
+
+.range-preview {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    margin: 18px 0;
+    padding: 14px;
+    border-left: 3px solid var(--teal);
+    background: #eef5f0;
+}
+
+.range-preview strong {
+    font-size: 15px;
+}
+
+.range-meta {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.primary-action {
+    display: flex;
+    width: 100%;
+    min-height: 48px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 14px;
+    border: 0;
+    border-radius: 5px;
+    background: var(--coral);
+    color: #fffdf8;
+    cursor: pointer;
+    font-weight: 700;
+    text-align: left;
+    transition: background 160ms ease, transform 160ms ease;
+}
+
+.primary-action:hover {
+    background: var(--coral-dark);
+    transform: translateY(-1px);
+}
+
+.primary-action:focus-visible {
+    outline: 3px solid #f6c76d;
+    outline-offset: 3px;
+}
+
+.action-arrow {
+    font-size: 20px;
+    line-height: 1;
+}
+
+.feed-summary {
+    margin-top: 14px;
+    padding: 14px 2px 0;
+    border-top: 1px solid var(--line);
+}
+
+.feed-summary strong {
+    display: block;
+    margin-top: 3px;
+    font-size: 13px;
+}
+
+.pulse {
+    box-shadow: 0 0 0 5px rgba(45, 133, 128, 0.13);
+}
+
+.activity-message {
+    min-height: 20px;
+    margin: 14px 2px 0;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.sideload-state {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 15vh;
+}
+
+.sideload-state h1 {
+    max-width: 300px;
+    margin: 12px 0 8px;
+    font-size: 32px;
+    line-height: 1;
+}
+
+.sideload-state p:last-child {
+    max-width: 300px;
+    margin: 0;
+    color: var(--muted);
+}
+
+@keyframes arrive {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 360px) {
+    .workspace,
+    .sideload-state {
+        padding-right: 16px;
+        padding-left: 16px;
+    }
+
+    .intro {
+        padding-top: 42px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .workspace,
+    .primary-action {
+        animation: none;
+        transition: none;
+    }
 }

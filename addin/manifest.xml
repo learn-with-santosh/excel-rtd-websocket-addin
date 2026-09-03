@@ -1,105 +1,182 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<OfficeApp xmlns="http://schemas.microsoft.com/office/appforoffice/1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0" xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides" xsi:type="TaskPaneApp">
+<!-- OfficeApp is the root element; xsi:type selects the add-in kind, here a task pane add-in. -->
+<OfficeApp
+  xmlns="http://schemas.microsoft.com/office/appforoffice/1.1"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0"
+  xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides"
+  xsi:type="TaskPaneApp">
+  <!-- Id is the unique GUID for this add-in; generate a new GUID for a different add-in. -->
   <Id>8b5f6c3e-83eb-4b93-a97c-0e386bed12c2</Id>
-  <Version>1.0.0.0</Version>
+  <!-- Version is the add-in package version in major.minor.build.revision format. -->
+  <Version>1.0.0.1</Version>
+  <!-- ProviderName is the company or person that publishes the add-in. -->
   <ProviderName>Contoso</ProviderName>
+  <!-- DefaultLocale is the fallback language; common values include en-US, en-GB, and de-DE. -->
   <DefaultLocale>en-US</DefaultLocale>
+  <!-- DisplayName is the name users see; DefaultValue can be replaced with a localized resource. -->
   <DisplayName DefaultValue="officejs-addin"/>
+  <!-- Description briefly explains what the add-in does. -->
   <Description DefaultValue="Write your own Excel functions in TypeScript."/>
+  <!-- IconUrl points to the normal add-in icon; the URL must use HTTPS. -->
   <IconUrl DefaultValue="https://localhost:3000/assets/icon-32.png"/>
+  <!-- HighResolutionIconUrl points to a larger icon for high-DPI displays. -->
   <HighResolutionIconUrl DefaultValue="https://localhost:3000/assets/icon-64.png"/>
+  <!-- SupportUrl is the web page users visit for help. -->
   <SupportUrl DefaultValue="https://www.contoso.com/help"/>
+
+  <!-- AppDomains lists trusted domains used by the add-in; add one AppDomain per domain. -->
   <AppDomains>
     <AppDomain>https://www.contoso.com</AppDomain>
   </AppDomains>
+
+  <!-- Hosts lists Office apps; Workbook means Excel. Other common values include Document and Presentation. -->
   <Hosts>
     <Host Name="Workbook"/>
   </Hosts>
+
+  <!-- Requirements declares the minimum Office features needed by this add-in. -->
   <Requirements>
+    <!-- Sets selects an API set; DefaultMinVersion is the minimum version for that set. -->
     <Sets DefaultMinVersion="1.1">
+      <!-- SharedRuntime enables shared JavaScript runtime support; MinVersion can be raised if needed. -->
       <Set Name="SharedRuntime" MinVersion="1.1"/>
     </Sets>
   </Requirements>
+
+  <!-- DefaultSettings contains URLs and settings used when no version override applies. -->
   <DefaultSettings>
+    <!-- SourceLocation is the initial task pane page. -->
     <SourceLocation DefaultValue="https://localhost:3000/taskpane.html"/>
   </DefaultSettings>
+
+  <!-- Permissions controls access: Restricted, ReadDocument, ReadWriteDocument, or ReadWriteMailbox. -->
   <Permissions>ReadWriteDocument</Permissions>
-  <VersionOverrides xmlns="http://schemas.microsoft.com/office/taskpaneappversionoverrides" xsi:type="VersionOverridesV1_0">
+
+  <!-- VersionOverrides adds newer host-specific commands, resources, and runtime settings. -->
+  <VersionOverrides
+    xmlns="http://schemas.microsoft.com/office/taskpaneappversionoverrides"
+    xsi:type="VersionOverridesV1_0">
+    <!-- Hosts describes the Office hosts supported by this override. -->
     <Hosts>
+      <!-- Host xsi:type selects the host; Workbook is Excel. -->
       <Host xsi:type="Workbook">
+        <!-- Runtimes defines JavaScript runtimes used by the add-in. -->
         <Runtimes>
+          <!-- Runtime resid points to a URL resource; lifetime can be short or long. -->
           <Runtime resid="Taskpane.Url" lifetime="long"/>
         </Runtimes>
+
+        <!-- AllFormFactors contains features available on desktop, web, and other form factors. -->
         <AllFormFactors>
+          <!-- ExtensionPoint adds a custom-functions integration. Other types include Events and Tasks. -->
           <ExtensionPoint xsi:type="CustomFunctions">
+            <!-- Script points to the JavaScript file that implements custom functions. -->
             <Script>
               <SourceLocation resid="Functions.Script.Url"/>
             </Script>
+            <!-- Page points to the HTML page used by the custom-functions runtime. -->
             <Page>
               <SourceLocation resid="Taskpane.Url"/>
             </Page>
+            <!-- Metadata points to the JSON file describing available custom functions. -->
             <Metadata>
               <SourceLocation resid="Functions.Metadata.Url"/>
             </Metadata>
+            <!-- Namespace is the prefix users type before a custom function name. -->
             <Namespace resid="Functions.Namespace"/>
           </ExtensionPoint>
         </AllFormFactors>
+
+        <!-- DesktopFormFactor contains ribbon commands for desktop-style Office clients. -->
         <DesktopFormFactor>
+          <!-- GetStarted provides optional first-run information and a help link. -->
           <GetStarted>
+            <!-- Title is the short first-run heading. -->
             <Title resid="GetStarted.Title"/>
+            <!-- Description is the first-run explanation. -->
             <Description resid="GetStarted.Description"/>
+            <!-- LearnMoreUrl is the optional help or documentation link. -->
             <LearnMoreUrl resid="GetStarted.LearnMoreUrl"/>
           </GetStarted>
+
+          <!-- FunctionFile is the page loaded for ribbon commands. -->
           <FunctionFile resid="Taskpane.Url"/>
+
+          <!-- PrimaryCommandSurface adds commands to the main ribbon. -->
           <ExtensionPoint xsi:type="PrimaryCommandSurface">
-            <OfficeTab id="TabHome">
+            <!-- CustomTab creates a new ribbon tab; its id must be unique. -->
+            <CustomTab id="RtdTab">
+              <!-- Group collects related ribbon controls; use multiple groups to organize commands. -->
               <Group id="CommandsGroup">
+                <!-- Label is the visible group name. -->
                 <Label resid="CommandsGroup.Label"/>
+                <!-- Icon supplies 16, 32, and 80 pixel images for the group. -->
                 <Icon>
                   <bt:Image size="16" resid="Icon.16x16"/>
                   <bt:Image size="32" resid="Icon.32x32"/>
                   <bt:Image size="80" resid="Icon.80x80"/>
                 </Icon>
+                <!-- Control is a ribbon item; Button is the available control type here. -->
                 <Control xsi:type="Button" id="TaskpaneButton">
+                  <!-- Label is the button text. -->
                   <Label resid="TaskpaneButton.Label"/>
+                  <!-- Supertip contains the button title and hover description. -->
                   <Supertip>
                     <Title resid="TaskpaneButton.Label"/>
                     <Description resid="TaskpaneButton.Tooltip"/>
                   </Supertip>
+                  <!-- Icon supplies the button images for different display sizes. -->
                   <Icon>
                     <bt:Image size="16" resid="Icon.16x16"/>
                     <bt:Image size="32" resid="Icon.32x32"/>
                     <bt:Image size="80" resid="Icon.80x80"/>
                   </Icon>
+                     <!-- Action defines what happens. ShowTaskpane opens a task pane;
+                       ExecuteFunction is another available action type. -->
                   <Action xsi:type="ShowTaskpane">
+                    <!-- TaskpaneId identifies the pane; reuse it when buttons open the same pane. -->
                     <TaskpaneId>ButtonId1</TaskpaneId>
+                    <!-- SourceLocation points to the page displayed in the pane. -->
                     <SourceLocation resid="Taskpane.Url"/>
                   </Action>
                 </Control>
               </Group>
-            </OfficeTab>
+              <!-- Label is the visible custom-tab name. -->
+              <Label resid="RtdTab.Label"/>
+            </CustomTab>
           </ExtensionPoint>
         </DesktopFormFactor>
       </Host>
     </Hosts>
+
+    <!-- Resources stores reusable images, URLs, and localized strings referenced by resid. -->
     <Resources>
+      <!-- Images maps image ids to icon URLs; supported ribbon sizes are commonly 16, 32, and 80. -->
       <bt:Images>
         <bt:Image id="Icon.16x16" DefaultValue="https://localhost:3000/assets/icon-16.png"/>
         <bt:Image id="Icon.32x32" DefaultValue="https://localhost:3000/assets/icon-32.png"/>
         <bt:Image id="Icon.80x80" DefaultValue="https://localhost:3000/assets/icon-80.png"/>
       </bt:Images>
+
+      <!-- Urls maps resource ids to HTTPS pages, scripts, and metadata files. -->
       <bt:Urls>
         <bt:Url id="Functions.Script.Url" DefaultValue="https://localhost:3000/functions.js"/>
         <bt:Url id="Functions.Metadata.Url" DefaultValue="https://localhost:3000/functions.json"/>
         <bt:Url id="GetStarted.LearnMoreUrl" DefaultValue="https://go.microsoft.com/fwlink/?LinkId=276812"/>
         <bt:Url id="Taskpane.Url" DefaultValue="https://localhost:3000/taskpane.html"/>
       </bt:Urls>
+
+      <!-- ShortStrings stores short labels and titles; each id is referenced by a resid attribute. -->
       <bt:ShortStrings>
         <bt:String id="Functions.Namespace" DefaultValue="COG"/>
         <bt:String id="GetStarted.Title" DefaultValue="Get started with your sample add-in!"/>
+        <bt:String id="RtdTab.Label" DefaultValue="RTD"/>
         <bt:String id="CommandsGroup.Label" DefaultValue="Commands Group"/>
         <bt:String id="TaskpaneButton.Label" DefaultValue="Show Task Pane"/>
       </bt:ShortStrings>
+
+      <!-- LongStrings stores longer descriptions and tooltips. -->
       <bt:LongStrings>
         <bt:String id="GetStarted.Description" DefaultValue="Your sample add-in loaded successfully. Go to the HOME tab and click the 'Show Task Pane' button to get started."/>
         <bt:String id="TaskpaneButton.Tooltip" DefaultValue="Click to Show a Task Pane"/>

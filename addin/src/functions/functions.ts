@@ -61,26 +61,6 @@ export function currentTime(): string {
   return new Date().toLocaleTimeString();
 }
 
-/**
- * Increments a value once a second.
- * @customfunction
- * @param incrementBy Amount to increment
- * @param invocation Custom function handler
- */
-export function increment(
-  incrementBy: number,
-  invocation: CustomFunctions.StreamingInvocation<number>
-): void {
-  let result = 0;
-  const timer = setInterval(() => {
-    result += incrementBy;
-    invocation.setResult(result);
-  }, 1000);
-
-  invocation.onCanceled = () => {
-    clearInterval(timer);
-  };
-}
 
 /**
  * Writes a message to console.log().
@@ -174,4 +154,80 @@ export function testStream(
   }, 1000);
 
   invocation.onCanceled = () => clearInterval(timer);
+}
+
+
+/**
+ * Get text values that spill down.
+ * @customfunction
+ * @returns {string[][]} A dynamic array with multiple results.
+ */
+function spillDown() {
+  return [['first'], ['second'], ['third']];
+}
+
+/**
+ * Get text values that spill to the right.
+ * @customfunction
+ * @returns {string[][]} A dynamic array with multiple results.
+ */
+function spillRight() {
+  return [['first', 'second', 'third']];
+}
+
+/**
+ * Get text values that spill both right and down.
+ * @customfunction
+ * @returns {string[][]} A dynamic array with multiple results.
+ */
+function spillRectangle() {
+  return [
+    ['apples', 1, 'pounds'],
+    ['oranges', 3, 'pounds'],
+    ['pears', 5, 'crates']
+  ];
+}
+
+
+/**
+ * Increment the cells with a given amount every second. Creates a dynamic spilled array with multiple results.
+ * @customfunction
+ * @param {number} amount The amount to add to the cell value on each increment.
+ * @param {CustomFunctions.StreamingInvocation<number[][]>} invocation Parameter to send results to Excel or respond to the user canceling the function. A dynamic array.
+ */
+function increment(amount: number, invocation: CustomFunctions.StreamingInvocation<number[][]>): void {
+  let firstResult = 0;
+  let secondResult = 1;
+  let thirdResult = 2;
+
+  const timer = setInterval(() => {
+    firstResult += amount;
+    secondResult += amount;
+    thirdResult += amount;
+    invocation.setResult([[firstResult], [secondResult], [thirdResult]]);
+  }, 1000);
+
+  invocation.onCanceled = () => {
+    clearInterval(timer);
+  };
+}
+
+
+/**
+ * Calculate squares of input numbers.
+ * @customfunction
+ * @param {number[]} numbers Array of numbers to process.
+ * @returns {any[][]} A dynamic array showing numbers and their squares.
+ */
+function calculateSquares(numbers: any[]) {
+  // Create header row.
+  const result = [['Number', 'Square']];
+
+  // Process each number.
+  numbers.forEach(row => {
+    const num = Array.isArray(row) ? row[0] : row;
+    result.push([num, num * num]);
+  });
+
+  return result;
 }

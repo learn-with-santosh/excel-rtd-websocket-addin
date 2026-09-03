@@ -1,5 +1,5 @@
 <!-- Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT License. -->
-<!-- This file shows how to design a first-run page that provides a welcome screen to the user about the features of the add-in. -->
+<!-- RTD task pane: the run action highlights the currently selected Excel range. -->
 
 <!DOCTYPE html>
 <html>
@@ -8,7 +8,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Contoso Task Pane Add-in</title>
+    <title>RTD Stream</title>
 
     <!-- Office JavaScript API -->
     <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
@@ -16,39 +16,63 @@
     <!-- For more information on Fluent UI, visit https://developer.microsoft.com/fluentui#/. -->
     <link rel="stylesheet" href="https://res-1.cdn.office.net/files/fabric-cdn-prod_20230815.002/office-ui-fabric-core/11.1.0/css/fabric.min.css"/>
 
-    <!-- Template styles -->
     <link href="taskpane.css" rel="stylesheet" type="text/css" />
 </head>
 
-<body class="ms-font-m ms-welcome ms-Fabric">
-    <header class="ms-welcome__header ms-bgColor-neutralLighter">
-        <img width="90" height="90" src="../../assets/logo-filled.png" alt="Contoso" title="Contoso" />
-        <h1 class="ms-font-su">Welcome</h1>
-    </header>
-    <section id="sideload-msg" class="ms-welcome__main">
-        <h2 class="ms-font-xl">Please <a target="_blank" href="https://learn.microsoft.com/office/dev/add-ins/testing/test-debug-office-add-ins#sideload-an-office-add-in-for-testing">sideload</a> your add-in to see app body.</h2>
+<body class="ms-Fabric">
+    <section id="sideload-msg" class="sideload-state">
+        <div class="brand-mark" aria-hidden="true">R</div>
+        <p class="eyebrow">RTD STREAM</p>
+        <h1>Connect your workbook</h1>
+        <p>Please <a target="_blank" href="https://learn.microsoft.com/office/dev/add-ins/testing/test-debug-office-add-ins#sideload-an-office-add-in-for-testing">sideload</a> the add-in to open the workspace.</p>
     </section>
-    <main id="app-body" class="ms-welcome__main" style="display: none;">
-        <h2 class="ms-font-xl"> Discover what Office Add-ins can do for you today! </h2>
-        <ul class="ms-List ms-welcome__features">
-            <li class="ms-ListItem">
-                <i class="ms-Icon ms-Icon--Ribbon ms-font-xl"></i>
-                <span class="ms-font-m">Achieve more with Office integration</span>
-            </li>
-            <li class="ms-ListItem">
-                <i class="ms-Icon ms-Icon--Unlock ms-font-xl"></i>
-                <span class="ms-font-m">Unlock features and functionality</span>
-            </li>
-            <li class="ms-ListItem">
-                <i class="ms-Icon ms-Icon--Design ms-font-xl"></i>
-                <span class="ms-font-m">Create and visualize like a pro</span>
-            </li>
-        </ul>
-        <p class="ms-font-l">Modify the source files, then click <b>Run</b>.</p>
-        <div role="button" id="run" class="ms-welcome__action ms-Button ms-Button--hero ms-font-xl">
-            <span class="ms-Button-label">Run</span>
-        </div>
-        <p><label id="item-subject"></label></p>
+
+    <main id="app-body" class="workspace" style="display: none;">
+        <header class="workspace-header">
+            <div class="brand-lockup">
+                <div class="brand-mark" aria-hidden="true">R</div>
+                <div>
+                    <p class="eyebrow">RTD STREAM</p>
+                    <h1>Workbook feed</h1>
+                </div>
+            </div>
+            <span class="connection-pill"><span class="status-dot" aria-hidden="true"></span>Ready</span>
+        </header>
+
+        <section class="intro" aria-labelledby="intro-title">
+            <p class="eyebrow">LIVE WORKSPACE</p>
+            <h2 id="intro-title">Shape the sheet.<br><em>See the signal.</em></h2>
+            <p class="intro-copy">Work with the active selection and keep your workbook feed easy to scan.</p>
+        </section>
+
+        <section class="selection-card" aria-labelledby="selection-title">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">ACTIVE CONTEXT</p>
+                    <h2 id="selection-title">Selected range</h2>
+                </div>
+                <span class="selection-icon" aria-hidden="true">+</span>
+            </div>
+            <div class="range-preview">
+                <span class="range-label">CELL RANGE</span>
+                <strong>Current Excel selection</strong>
+                <span class="range-meta">Ready for an action</span>
+            </div>
+            <button type="button" id="run" class="primary-action">
+                <span>Highlight selected range</span>
+                <span class="action-arrow" aria-hidden="true">&#8594;</span>
+            </button>
+        </section>
+
+        <section class="feed-summary" aria-label="Feed summary">
+            <div>
+                <span class="summary-label">STREAM STATUS</span>
+                <strong>Listening for updates</strong>
+            </div>
+            <span class="pulse" aria-hidden="true"></span>
+        </section>
+
+        <p id="item-subject" class="activity-message" aria-live="polite"></p>
     </main>
 </body>
 
