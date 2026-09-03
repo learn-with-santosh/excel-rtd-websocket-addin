@@ -42,6 +42,18 @@ npm start
 
 The add-in development server is available at `https://localhost:3000` and the mock WebSocket server listens at `ws://localhost:8080`.
 
+## Task Pane Market Board
+
+Open the **Workbook feed** task pane from the add-in in Excel to view live values without manually writing formulas:
+
+1. Enter symbols, one per line or separated by commas.
+2. Enter the fields to display, such as `LAST, OPEN, HIGH, LOW`.
+3. Select **Connect board**. Duplicate symbols are subscribed only once.
+4. Use **Copy formulas** to copy a tab-separated grid containing live `COG.GETLIVEDATA` formulas.
+5. Select a starting cell in Excel and use **Paste to Excel** to insert formulas that continue streaming.
+
+The task pane sends one subscription containing the unique symbols. Fields are selected locally from each symbol's quote update.
+
 ## Excel Namespace
 
 The namespace is `COG`, configured in `addin/manifest.xml`. Use `COG.` before every custom function name.
@@ -182,6 +194,7 @@ npm --prefix addin run build
 - If functions do not appear, close Excel, run `npm --prefix addin run stop`, then run `npm --prefix addin run start` and reload the manifest.
 - Use the current namespace: `=COG.TESTSTREAM(1)`.
 - `GETLIVEDATA` requires the mock server to be running on port `8080`.
+- The task pane market board also requires the mock WebSocket server and uses the same `ws://localhost:8080` endpoint.
 - If port `3000` or `8080` is busy, stop the existing process or change the corresponding configuration.
 - The add-in uses HTTPS locally. Accept/install the development certificate when prompted.
 
